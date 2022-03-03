@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import javax.swing.Timer;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
+import java.lang.Math;
+import java.lang.Thread;
 import java.util.ArrayList;
 
 public class JVJPanel extends JPanel implements ActionListener {
@@ -20,23 +23,13 @@ public class JVJPanel extends JPanel implements ActionListener {
 	static Ball ball = new Ball(250, 480);
 	Thread ballProcess = new Thread(ball);
 
-	ArrayList<Block> list = new ArrayList<Block>();
+	public static ArrayList<Block> list = new ArrayList<Block>();
 
 	private static int score = 0;
 
 	Timer timer = new Timer(50, this);
 
-	JVJPanel() {
-		System.out.println("JVJPanel iniciado");
-		ballProcess.start();
-		playerProcess.start();
-		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		this.setBackground(Color.black);
-		this.setFocusable(true);
-		this.addKeyListener(new MyKeyAdapter());
-		timer.start();
-
-		//loading map
+	public static void generatedMap() {
 		for(int iy = 0; iy<=4; iy++) {
 			for(int ix = 0; ix<=4; ix++) {
 				//creamos nuevo objecto bloke
@@ -48,6 +41,19 @@ public class JVJPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	JVJPanel() {
+		System.out.println("JVJPanel iniciado");
+		ballProcess.start();
+		playerProcess.start();
+		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		this.setBackground(Color.black);
+		this.setFocusable(true);
+		this.addKeyListener(new MyKeyAdapter());
+		timer.start();
+
+		generatedMap();
+	}
+
 	public void paintComponent(Graphics ctx) {
 		super.paintComponent(ctx);
 
@@ -56,6 +62,7 @@ public class JVJPanel extends JPanel implements ActionListener {
 
 		ctx.setFont(new Font("Monospaced", Font.BOLD, 18));
 		ctx.drawString("Score: " + score, 10, 510);
+		ctx.drawString("Sebastián Balebona", 290, 510);
 		
 		ctx.setColor(Color.red);
 
@@ -67,13 +74,44 @@ public class JVJPanel extends JPanel implements ActionListener {
 		ctx.fillRect(player.x, player.y, player.width, player.height);
 	}
 
+	public static void reset() {
+		try {
+			player.x = 200;
+			player.y = 480;
+
+			ball.x = 250;
+			ball.y = 480;
+			ball.addEjeX = Math.abs(ball.addEjeX);
+			
+			list.clear();
+
+			score = 0;
+
+			Thread.sleep(1000);
+
+			generatedMap();
+		}catch (Exception e) {
+			System.out.println("JVJPanel-reset: " + e);
+		}
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ball.collision(player);
+		if(ball.collision(player)) {
+			reset();
+		}
 		ball.addCoordinated();
 		for(Block i : list) {
 			if(i.collision(ball)) {
 				score++;
+				if(score == 25) {
+					int confirm = JOptionPane.showConfirmDialog(null, "Win!!!", "Win", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					if(confirm == JOptionPane.YES_NO_OPTION) {
+						reset();
+					}else {
+						System.exit(0);
+					}
+				}
 			}
 		}
 		repaint();

@@ -1,4 +1,5 @@
 import java.lang.Math;
+import javax.swing.JOptionPane;
 
 public class Ball extends Thread {
 	public static float x = 0f;
@@ -18,7 +19,7 @@ public class Ball extends Thread {
 		this.y = y;
 	}
 
-	public void collision(Player player) {
+	public boolean collision(Player player) {
 		if(this.x > 500-this.width) {
 			System.out.println("ball right");
 			this.addEjeX = -5 * (float) Math.sin(ANG);
@@ -34,6 +35,15 @@ public class Ball extends Thread {
 		if(this.y < 0+this.height) {
 			this.addEjeY = 5 * (float) Math.cos(ANG);
 		}
+		if(this.y > 520) {
+			int confirm = JOptionPane.showConfirmDialog(null, "            Game over.\n¿Quieres volver a jugar?",   "Game over", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if(confirm == JOptionPane.YES_NO_OPTION) {
+				return true;
+			}else {
+				System.exit(0);
+			}
+		}
+		return false;
 	}
 
 	public void addCoordinated() {

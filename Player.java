@@ -14,10 +14,18 @@ public class Player extends Thread {
 	}
 
 	public void left() {
-		this.x -= 5;
+		if(this.x > 0) {
+			this.x -= 5;
+		}else {
+			System.out.println("Stop left");
+		}
 	}
 
 	public void right() {
-		this.x += 5;
+		if(this.x < 400) {
+			this.x += 5;
+		}else {
+			System.out.println("Stop right");
+		}
 	}
 }
