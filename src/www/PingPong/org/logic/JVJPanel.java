@@ -1,16 +1,11 @@
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Font;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionListener;
+package www.PingPong.org.logic;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
-import javax.swing.Timer;
-import javax.swing.JPanel;
-import javax.swing.JOptionPane;
-import java.lang.Math;
-import java.lang.Thread;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class JVJPanel extends JPanel implements ActionListener {
@@ -32,17 +27,16 @@ public class JVJPanel extends JPanel implements ActionListener {
 	public static void generatedMap() {
 		for(int iy = 0; iy<=4; iy++) {
 			for(int ix = 0; ix<=4; ix++) {
-				//creamos nuevo objecto bloke
 				Block block = new Block((ix*100)+10, (iy*40)+10);
-				list.add(block);	//adding list
-				Thread blockProcess = new Thread(block);	//iniciamos proceso
-				blockProcess.start();						//de multiples hilo
+				list.add(block);
+				Thread blockProcess = new Thread(block);
+				blockProcess.start();
 			}
 		}
 	}
 
 	JVJPanel() {
-		System.out.println("JVJPanel iniciado");
+		System.out.println("JVJPanel init");
 		ballProcess.start();
 		playerProcess.start();
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -58,7 +52,7 @@ public class JVJPanel extends JPanel implements ActionListener {
 		super.paintComponent(ctx);
 
 		ctx.setColor(Color.white);
-		ctx.fillOval((int) ball.x, (int) ball.y, ball.width, ball.height);
+		ctx.fillOval((int) Ball.x, (int) Ball.y, Ball.width, Ball.height);
 
 		ctx.setFont(new Font("Monospaced", Font.BOLD, 18));
 		ctx.drawString("Score: " + score, 10, 510);
@@ -66,27 +60,25 @@ public class JVJPanel extends JPanel implements ActionListener {
 		
 		ctx.setColor(Color.red);
 
-		for(int i = 0; i<list.size(); i++) {
-			ctx.fillRect(list.get(i).x, list.get(i).y, list.get(i).width, list.get(i).height);
+		for(Block block : list) {
+			ctx.fillRect(block.x, block.y, block.width, block.height);
 		}
 
 		ctx.setColor(Color.white);
-		ctx.fillRect(player.x, player.y, player.width, player.height);
+		ctx.fillRect(Player.x, Player.y, Player.width, Player.height);
 	}
 
 	public static void reset() {
 		try {
-			player.x = 200;
-			player.y = 480;
+			Player.x = 200;
+			Player.y = 480;
 
-			ball.x = 250;
-			ball.y = 480;
-			ball.addEjeX = Math.abs(ball.addEjeX);
-			
+			Ball.x = 250;
+			Ball.y = 480;
+			Ball.addEjeX = Math.abs(Ball.addEjeX);
 			list.clear();
 
 			score = 0;
-
 			Thread.sleep(1000);
 
 			generatedMap();
@@ -120,15 +112,9 @@ public class JVJPanel extends JPanel implements ActionListener {
 	public class MyKeyAdapter extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
-			switch(e.getKeyCode()) {
-				case KeyEvent.VK_LEFT:
-					System.out.println("Left");
-					player.left();
-					break;
-				case KeyEvent.VK_RIGHT:
-					System.out.println("Right");
-					player.right();
-					break;
+			switch (e.getKeyCode()) {
+				case KeyEvent.VK_LEFT: player.left();break;
+				case KeyEvent.VK_RIGHT: player.right();break;
 			}
 		}
 	}

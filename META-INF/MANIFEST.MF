@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Created-By: Sebastian
-Main-Class: main
-X-COMMENT: Pingpong creado con el lenguaje Java

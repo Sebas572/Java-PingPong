@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Created-By: Sebastian Balebona
+Main-Class: www.PingPong.org.main
+X-COMMENT: Recreate the game of ping pong with the java language
+

@@ -1,3 +1,5 @@
+package www.PingPong.org.logic;
+
 public class Player extends Thread {
 	public static int x = 0;
 	public static int y = 0;
@@ -14,18 +16,10 @@ public class Player extends Thread {
 	}
 
 	public void left() {
-		if(this.x > 0) {
-			this.x -= 5;
-		}else {
-			System.out.println("Stop left");
-		}
+		if(this.x > 0) this.x -= 5;
 	}
 
 	public void right() {
-		if(this.x < 400) {
-			this.x += 5;
-		}else {
-			System.out.println("Stop right");
-		}
+		if(this.x < 400) this.x += 5;
 	}
 }

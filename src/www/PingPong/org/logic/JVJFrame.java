@@ -1,7 +1,10 @@
-import javax.swing.JFrame;
+package www.PingPong.org.logic;
 
-public class JVJFrame extends JFrame {
-	JVJFrame() {
+import javax.swing.*;
+
+public class JVJFrame extends JFrame implements Runnable {
+
+	public JVJFrame() {
 		this.add(new JVJPanel());
 		this.setTitle("Ping Pong");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -9,5 +12,11 @@ public class JVJFrame extends JFrame {
 		this.pack();
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
+		this.run();
+	}
+
+	@Override
+	public void run() {
+		while(true) this.repaint();
 	}
 }

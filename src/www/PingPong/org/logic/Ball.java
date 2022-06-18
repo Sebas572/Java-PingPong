@@ -1,5 +1,6 @@
-import java.lang.Math;
-import javax.swing.JOptionPane;
+package www.PingPong.org.logic;
+
+import javax.swing.*;
 
 public class Ball extends Thread {
 	public static float x = 0f;
@@ -21,11 +22,9 @@ public class Ball extends Thread {
 
 	public boolean collision(Player player) {
 		if(this.x > 500-this.width) {
-			System.out.println("ball right");
 			this.addEjeX = -5 * (float) Math.sin(ANG);
 		}
 		if(this.x < 0+this.width) {
-			System.out.println("ball left");
 			this.addEjeX = 5 * (float) Math.sin(ANG);
 		}
 
